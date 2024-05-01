@@ -17,7 +17,7 @@ class Scrapper {
     return [
       new Paper(
         123,
-        'The Nobel Prize in Physiology or Medicine 2023',
+        'teste',
         'Nobel Prize',
         [
           new Person('Katalin Karikó', 'Szeged University'),

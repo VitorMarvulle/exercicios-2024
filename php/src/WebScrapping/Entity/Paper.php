@@ -21,6 +21,7 @@ class Paper {
    */
   public $title;
 
+
   /**
    * The paper type (e.g. Poster, Nobel Prize, etc).
    *
@@ -39,6 +40,14 @@ class Paper {
    * Builder.
    */
   public function __construct($id, $title, $type, $authors = []) {
+    $this->id = $id;
+    $this->title = $title;
+    $this->type = $type;
+    $this->authors = $authors;
   }
 
+  public function getPaperTitle(){
+    
+  }
+  
 }
