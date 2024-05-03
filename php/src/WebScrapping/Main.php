@@ -20,9 +20,7 @@ class Main {
     $scrapper = new Scrapper();
     $papers = $scrapper->scrap($xPath);
 
-    foreach ($papers as $paper){
-      $paper->id;
-    }
+
 
     print_r($papers);
 
