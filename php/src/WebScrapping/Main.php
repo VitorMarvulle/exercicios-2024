@@ -16,12 +16,22 @@ class Main {
     $dom = new \DOMDocument('1.0', 'utf-8');
     $dom->loadHTMLFile(__DIR__ . '/../../assets/origin.html');
     $xPath = new \DOMXPath($dom);
+   
+    $scrapper = new Scrapper();
+    $papers = $scrapper->scrap($xPath);
 
-    $data = (new Scrapper())->scrap($dom);
+    foreach ($papers as $paper){
+      $paper->id;
+    }
+
+    print_r($papers);
+
+
+    //$data = (new Scrapper())->scrap($dom);
 
     // Write your logic to save the output file bellow.
-    print_r($data);
-    echo($data);
+    //print_r($data);
+    //echo($data);
     
     
 

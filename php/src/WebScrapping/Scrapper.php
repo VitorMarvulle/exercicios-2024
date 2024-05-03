@@ -13,18 +13,22 @@ class Scrapper {
   /**
    * Loads paper information from the HTML and returns the array with the data.
    */
-  public function scrap(\DOMDocument $dom): array {
-    return [
-      new Paper(
-        123,
-        'teste',
-        'Nobel Prize',
-        [
-          new Person('Katalin Karikó', 'Szeged University'),
-          new Person('Drew Weissman', 'University of Pennsylvania'),
-        ]
-      ),
-    ];
+  public function scrap(\DOMXPath $xPath): array {
+    $NodeList = $xPath->query("//div[@class='volume-info']/text()");
+    $papers = []; //armazenar os dados dos papers em array
+
+    foreach ($NodeList as $Node){
+      $id = $Node->textContent;
+
+      $papers[]= new Paper(
+        $id,
+        'Título teste',
+        'Título teste2'
+      );
+    }
+    return $papers;
   }
+
+
 
 }
