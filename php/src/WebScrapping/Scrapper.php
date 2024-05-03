@@ -15,19 +15,23 @@ class Scrapper {
    */
   public function scrap(\DOMXPath $xPath): array {
     $NodeList = $xPath->query("//div[@class='volume-info']/text()");
+    $NodeListTitle = $xPath->query("//h4[@class='my-xs paper-title']/text()");
+    $NodeListType = $xPath->query("//div[@class='tags mr-sm']/text()");
     $papers = []; //armazenar os dados dos papers em array
 
-    foreach ($NodeList as $Node){
-      $id = $Node->textContent;
-
-      $papers[]= new Paper(
-        $id,
-        'Título teste',
-        'Título teste2'
+    for ($i = 0; $i < $NodeList->length; $i++) {
+      $id = $NodeList->item($i)->textContent;
+      $title = $NodeListTitle->item($i)->textContent;
+      $type = $NodeListType->item($i)->textContent;
+      $papers[] = new Paper(
+          $id,
+          $title,
+          $type
       );
-    }
-    return $papers;
   }
+
+  return $papers;
+}
 
 
 
