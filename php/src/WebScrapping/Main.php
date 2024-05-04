@@ -20,18 +20,7 @@ class Main {
     $scrapper = new Scrapper();
     $papers = $scrapper->scrap($xPath);
 
-
-
     print_r($papers);
-
-
-    //$data = (new Scrapper())->scrap($dom);
-
-    // Write your logic to save the output file bellow.
-    //print_r($data);
-    //echo($data);
-    
-    
 
   }
 
