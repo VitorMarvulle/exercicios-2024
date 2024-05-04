@@ -43,6 +43,7 @@ class Paper {
     
     $this->id = $id;
     $this->title = $title;
+    $this->title = $title;
     $this->type = $type;
     $this->authors = $authors; 
   }
