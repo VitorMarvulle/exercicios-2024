@@ -2,7 +2,6 @@
 
 namespace Chuva\Php\WebScrapping;
 
-// Nao imprime os warnings de tags (CSS) inválidas
 libxml_use_internal_errors(true);
 use Box\Spout\Common\Entity\Style\Color;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
@@ -11,14 +10,12 @@ use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 /**
  * Runner for the Webscrapping exercice.
  */
-class Main
-{
+class Main{
 
     /**
      * Main runner, instantiates a Scrapper and runs.
      */
-    public static function run(): void
-    {
+    public static function run(): void{
 
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->loadHTMLFile(__DIR__ . '/../../assets/origin.html');
@@ -42,7 +39,7 @@ class Main
         /**
          * Busca paper com maior número de autores para gerar o Header da planilha.
          */
-    
+
         $maxAuthors = 0;
         foreach ($papers as $paper) {
             $numAuthors = count($paper->authors);
@@ -90,4 +87,5 @@ class Main
 
         $writer->close();
     }
+    
 }

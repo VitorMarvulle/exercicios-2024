@@ -8,21 +8,19 @@ use Chuva\Php\WebScrapping\Entity\Person;
 /**
  * Does the scrapping of a webpage.
  */
-class Scrapper
-{
+class Scrapper{
 
     /**
      * Loads paper information from the HTML and returns the array with the data.
      */
-    public function scrap(\DOMXPath $xPath): array
-    {
+    public function scrap(\DOMXPath $xPath): array{
         $nodeList = $xPath->query("//a[@class='paper-card p-lg bd-gradient-left']");
         $nodeListId = $xPath->query("//div[@class='volume-info']/text()");
         $nodeListTitle = $xPath->query("//h4[@class='my-xs paper-title']/text()");
         $nodeListType = $xPath->query("//div[@class='tags mr-sm']/text()");
 
 
-        for ($i = 0; $i < $nodeList->length; $i++) {
+        for ($i = 0; $i < $nodeList->length; $i++){
             $id = $nodeListId->item($i)->textContent;
             $title = $nodeListTitle->item($i)->textContent;
             $type = $nodeListType->item($i)->textContent;
@@ -49,6 +47,9 @@ class Scrapper
                 $authors
             );
         }
+        
         return $papers;
+
     }
+
 }
