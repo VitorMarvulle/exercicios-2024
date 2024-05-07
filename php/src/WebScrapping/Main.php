@@ -2,22 +2,22 @@
 
 namespace Chuva\Php\WebScrapping;
 
-libxml_use_internal_errors(true); //nao imprime os warnings de tags (CSS) inválidas
+// Nao imprime os warnings de tags (CSS) inválidas
+libxml_use_internal_errors(TRUE);
+use Box\Spout\Common\Entity\Style\Color; 
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
-use Box\Spout\Common\Entity\Style\Color;
+
 
 /**
  * Runner for the Webscrapping exercice.
  */
-class Main
-{
+class Main {
 
   /**
    * Main runner, instantiates a Scrapper and runs.
    */
-  public static function run(): void
-  {
+  public static function run(): void{
 
     $dom = new \DOMDocument('1.0', 'utf-8');
     $dom->loadHTMLFile(__DIR__ . '/../../assets/origin.html');
@@ -26,30 +26,44 @@ class Main
 
     $scrapper = new Scrapper();
     $papers = $scrapper->scrap($xPath);
+    /**
+     * Recupera todos os dados e armazena em arrays separadamente
+     */
+    print_r($papers);
 
-    print_r($papers);  //recupera todos os dados e armazena em arrays separadamente
+    /**
+     * SCRIPT para escrever no doc model.xlsx usando a lib Spout.
+     */
 
-    //*//
-    //SCRIPT para escrever no doc model.xlsx usando a lib Spout.
     $writer = WriterEntityFactory::createXLSXWriter();
     $writer->openToFile($filePath);
 
-    $maxAuthors = 0;  //busca paper com maior número de autores para gerar o Header da planilha.
+    /**
+     * Busca paper com maior número de autores para gerar o Header da planilha.
+     */
+    
+    $maxAuthors = 0;  
     foreach ($papers as $paper) {
       $numAuthors = count($paper->authors);
-      if ($numAuthors > $maxAuthors) {
+      if ($numAuthors > $maxAuthors){
         $maxAuthors = $numAuthors;
       }
     }
 
-    // Headers (Author/Author Inst) dinâmicos com base no número máximo de autores coletados no scrapper.
+    /**
+     * Headers (Author/Author Inst) dinâmicos com base no número máximo de autores coletados no scrapper.
+     */
+
     $headers = ['ID', 'Title', 'Type'];
-    for ($i = 1; $i < $maxAuthors-1; $i++) {
+    for ($i = 1; $i < $maxAuthors - 1; $i++) {
       $headers[] = "Author{$i}";
       $headers[] = "Author{$i} Institution";
     }
 
-    //estilização simples da planilha com fontBold e bg-color dos headers.
+    /**
+     * Estilização simples da planilha com fontBold e bg-color dos headers.
+     */
+
     $rowStyle = (new StyleBuilder())
     ->setFontBold()
     ->setBackgroundColor(Color::rgb(118, 206, 250))
@@ -57,19 +71,18 @@ class Main
     $headerRow = WriterEntityFactory::createRowFromArray($headers, $rowStyle);
     $writer->addRow($headerRow);
 
-    foreach ($papers as $paper) {
+    foreach ($papers as $paper){
       $id = $paper->id;
       $title = $paper->title;
       $type = $paper->type;
-      $authors = $paper->authors; // array de objetos Person
+      $authors = $paper->authors;
       $rowPaper = [$id, $title, $type];
 
-      foreach ($authors as $author) {
+      foreach ($authors as $author){
         $rowPaper[] = $author->name;
         $rowPaper[] = $author->institution;
       }
 
-      // linha com os dados do paper já separados por colunas.
       $row = WriterEntityFactory::createRowFromArray($rowPaper);
       $writer->addRow($row);
     }

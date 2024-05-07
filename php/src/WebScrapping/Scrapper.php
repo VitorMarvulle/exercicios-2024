@@ -8,35 +8,33 @@ use Chuva\Php\WebScrapping\Entity\Person;
 /**
  * Does the scrapping of a webpage.
  */
-class Scrapper
-{
+class Scrapper {
 
   /**
    * Loads paper information from the HTML and returns the array with the data.
    */
-  public function scrap(\DOMXPath $xPath): array
-  {
-    $NodeList = $xPath->query("//a[@class='paper-card p-lg bd-gradient-left']");
-    $NodeListId = $xPath->query("//div[@class='volume-info']/text()");
-    $NodeListTitle = $xPath->query("//h4[@class='my-xs paper-title']/text()");
-    $NodeListType = $xPath->query("//div[@class='tags mr-sm']/text()");
+  public function scrap(\DOMXPath $xPath): array{
+    $nodeList = $xPath->query("//a[@class='paper-card p-lg bd-gradient-left']");
+    $nodeListId = $xPath->query("//div[@class='volume-info']/text()");
+    $nodeListTitle = $xPath->query("//h4[@class='my-xs paper-title']/text()");
+    $nodeListType = $xPath->query("//div[@class='tags mr-sm']/text()");
 
-    //iteração id, title, type
-    for ($i = 0; $i < $NodeList->length; $i++) {      //usarei o xPath dos cards como índice para iterar
-      $id = $NodeListId->item($i)->textContent;
-      $title = $NodeListTitle->item($i)->textContent;
-      $type = $NodeListType->item($i)->textContent;
+
+    for ($i = 0; $i < $nodeList->length; $i++){ 
+      $id = $nodeListId->item($i)->textContent;
+      $title = $nodeListTitle->item($i)->textContent;
+      $type = $nodeListType->item($i)->textContent;
 
       $authors = [];
 
-      //iteração authors_name, authors_inst  
-      $NodeListAuthors = $xPath->query("//a[$i+1]//div[@class='authors']/span/text()");
-      $NodeListAuthors_name = $xPath->query("//a[$i+1]//div[@class='authors']/span/text()");
-      $NodeListAuthors_inst = $xPath->query("//a[$i+1]//div[@class='authors']//span/@title");
-      for ($j = 0; $j < $NodeListAuthors->length; $j++) {
+  
+      $nodeListAuthors = $xPath->query("//a[$i+1]//div[@class='authors']/span/text()");
+      $nodeListAuthors_name = $xPath->query("//a[$i+1]//div[@class='authors']/span/text()");
+      $nodeListAuthors_inst = $xPath->query("//a[$i+1]//div[@class='authors']//span/@title");
+      for ($j = 0; $j < $nodeListAuthors->length; $j++){
 
-        $name = $NodeListAuthors_name->item($j)->textContent;
-        $institution = $NodeListAuthors_inst->item($j)->textContent;
+        $name = $nodeListAuthors_name->item($j)->textContent;
+        $institution = $nodeListAuthors_inst->item($j)->textContent;
         $authors[] = new Person(
           $name,
           $institution
